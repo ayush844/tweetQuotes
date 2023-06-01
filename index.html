@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUOTES</title>
+
+    <!-- <link rel="stylesheet" href="style.css"> -->
+
+
+    <script src="https://kit.fontawesome.com/7544eb8730.js" crossorigin="anonymous"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Signika&display=swap" rel="stylesheet">
+
+
+
+    <style>
+        body{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: #001253;
+}
+
+
+
+
+
+.backCard{
+    background-color: #0079FF;
+    width: 80%;
+    height: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid black;
+}
+
+.card{
+
+    background-color: white;
+    width: 80%;
+    height: 90%;
+    border: 2px solid black;
+    box-shadow: 5px 10px 5px  rgba(0, 0, 0, 0.8);
+    position: relative;
+}
+
+
+.iconBox{
+    display: inline-block;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    cursor: pointer;
+    transition: transform 0.5s ease;
+}
+
+.iconBox:hover{
+    transform: rotate(360deg); 
+}
+
+
+.iconBox:active{
+    transform: scale(1.5);
+}
+ 
+
+.content{
+    width: 90%;
+    height: 85%;
+    position: relative;
+    font-family: 'Signika', sans-serif;
+
+}
+
+.quote1{
+    position: absolute;
+    left: 0.5rem;
+    top: 1rem;
+}
+
+.content .quote{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    position: relative;
+    top: 7.5rem;
+    left: 1rem;
+    height: 80%;
+    width: 90%;
+    overflow-y: hidden;
+
+}
+
+
+
+.content .quote p{
+    font-size: 1.45rem;
+    letter-spacing: 1px;
+
+}
+
+.quote2{
+    position: absolute;
+    right: 0.5rem;
+}
+
+
+.author{
+    width: 100%;
+    height: 5%;
+    position: relative;
+}
+
+#authorName{
+    position: absolute;
+    top: 0;
+    right: 0.5rem;
+    font-family: 'Kanit', sans-serif;
+    color: rgb(104,104,104) ;
+    font-size: 1.05rem;
+    text-shadow:  rgba(0, 0, 0, 0.8);
+    font-weight: bold;
+    letter-spacing: 2px;
+
+}
+
+
+.button{
+    bottom: 0;
+    margin-top: 10px;
+    height: 10%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+
+#new{
+    padding: 8px;
+    color: white;
+    background-color: #0C134F;
+    border-radius: 5px;
+    font-size: 1rem;
+    border: 1px solid black;
+    display: block;
+    width: 50%;
+    letter-spacing: 2px;
+    transition: 1s;
+    cursor: pointer;
+}
+
+#new:hover{
+    color:#0C134F ;
+    background-color: white;
+}
+
+    </style>
+</head>
+
+
+
+
+<body>
+
+    <div class="backCard">
+        <div class="card">
+            <div class="iconBox">
+                <i class="fa-brands fa-twitter fa-3x" id = "icon" style="color: #4e8efd;"></i>
+            </div>
+            <div class="content">
+                <i class="fa-sharp fa-solid fa-quote-left fa-8x quote1" style="color: rgba(184,184,184, 0.4);"></i>
+                <div class="quote">
+                    <p id="quote"></p>
+                </div>
+                
+                <i class="fa-sharp fa-solid fa-quote-right fa-8x quote2" style="color: rgba(184,184,184, 0.4);"></i>
+            </div>
+            <div class="author">
+                <p id="authorName">~by Ayush Sharma</p>
+            </div>
+
+            <div class="button">
+                <button id="new">
+                    New Quote
+                </button>
+            </div>
+            
+        </div>
+        
+    </div>
+
+
+
+    <script>
+
+        let quotes = document.getElementById("quote");
+        let author = document.getElementById("authorName");
+        let realData = "";
+        
+        let newQ = document.getElementById("new");
+        let tweet = document.getElementById("icon");
+
+
+        const tweetNow = () => {
+            let tweetPost = `https://twitter.com/intent/tweet?text=${quotes.innerHTML}`;
+            window.open(tweetPost);
+        }
+
+
+        const getNewQuotes = () => {
+            let rno = Math.floor(Math.random() * 1640);
+            quotes.innerHTML = realData[rno].text;
+            author.innerHTML = "~by " + realData[rno].author;
+        }
+
+        const getQuotes = async () => {
+            const api = "https://type.fit/api/quotes";
+            try {
+                let data = await fetch(api);
+                realData = await data.json();
+                // console.log(realData[0].text)
+                // console.log(realData[0].author);
+                console.log(realData);
+                getNewQuotes();
+
+
+            } catch (error) {
+                console.log("FOUND AN ERROR");
+            }
+
+
+        }
+        
+
+        newQ.addEventListener("click", getNewQuotes);
+
+        tweet.addEventListener("click", tweetNow);
+
+        getQuotes();
+
+    </script>
+    
+</body>
+</html>
